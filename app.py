@@ -44,17 +44,29 @@ def get_connection(include_db=True):
         kwargs["database"] = os.getenv("MYSQL_DATABASE", "spend_smart_db")
 
     ssl_ca = os.getenv("MYSQL_SSL_CA")
-    if ssl_ca:
+    if ssl_ca and os.path.exists(ssl_ca):
         kwargs["ssl_ca"] = ssl_ca
+        kwargs["ssl_verify_cert"] = True
+    elif os.getenv("MYSQL_SSL", "").lower() in ("true", "1") or (
+        os.getenv("MYSQL_HOST") and os.getenv("MYSQL_HOST") not in ("localhost", "127.0.0.1")
+    ):
+        # Enable SSL for cloud-hosted databases such as Aiven
+        kwargs["ssl_disabled"] = False
+        kwargs["ssl_verify_cert"] = False
 
     return mysql.connector.connect(**kwargs)
 
 def init_db():
-    """Ensure database and tables exist according to schema.sql."""
+    """Ensure database and tables exist according to schema."""
     db_name = os.getenv("MYSQL_DATABASE", "spend_smart_db")
-    with get_connection(include_db=False) as conn:
-        with conn.cursor() as cur:
-            cur.execute(f"CREATE DATABASE IF NOT EXISTS `{db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    # For local databases, attempt database creation if permissions allow
+    try:
+        with get_connection(include_db=False) as conn:
+            with conn.cursor() as cur:
+                cur.execute(f"CREATE DATABASE IF NOT EXISTS `{db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    except mysql.connector.Error:
+        # Cloud providers like Aiven restrict CREATE DATABASE; proceed directly to table creation in existing database
+        pass
     
     with get_connection(include_db=True) as conn:
         with conn.cursor() as cur:
