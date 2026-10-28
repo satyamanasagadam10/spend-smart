@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Overview · Spend Smart{% endblock %}
+{% block heading %}Your spending overview{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-copy">
+        <small>A LITTLE CLARITY GOES A LONG WAY</small>
+        <h2>Make every rupee<br><em>count.</em></h2>
+        <p>Track expenses, spot patterns, and make more confident money decisions.</p>
+        <a class="button" href="{{ url_for('expenses') }}">＋ Add an expense <b>→</b></a>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+        <div class="bubble"></div>
+        <div class="coin">₹</div>
+        <div class="wallet">
+            <i></i>
+            <span>●</span>
+        </div>
+        <div class="spark">✦</div>
+    </div>
+</section>
+
+<!-- Summary Statistics -->
+<section class="stats">
+    <article class="stat dark">
+        <small>Total expenses</small>
+        <strong>₹{{ summary.total|currency }}</strong>
+        <span>Across all saved records</span>
+    </article>
+    <article class="stat">
+        <small>Entries recorded</small>
+        <strong>{{ summary.count }}</strong>
+        <span>Expenses in your tracker</span>
+    </article>
+    <article class="stat">
+        <small>Average expense</small>
+        <strong>₹{{ summary.average|currency }}</strong>
+        <span>Average per entry</span>
+    </article>
+</section>
+
+<!-- Visual Analytics and Recent Activity -->
+<section class="columns">
+    <!-- Category Chart Breakdown -->
+    <article class="panel">
+        <div class="panel-title">
+            <div>
+                <small>YOUR BREAKDOWN</small>
+                <h3>Spending by category</h3>
+            </div>
+            <span class="badge">Overview</span>
+        </div>
+        {% if chart_labels %}
+            <div class="chart">
+                <canvas id="chart"></canvas>
+            </div>
+        {% else %}
+            <div class="empty">
+                <b>◔</b>
+                <h4>Your chart starts here</h4>
+                <p>Add your first expense to see category-wise spending.</p>
+                <a href="{{ url_for('expenses') }}">Add an expense →</a>
+            </div>
+        {% endif %}
+    </article>
+
+    <!-- Recent Expenses Panel -->
+    <article class="panel">
+        <div class="panel-title">
+            <div>
+                <small>LATEST ACTIVITY</small>
+                <h3>Recent expenses</h3>
+            </div>
+            <a href="{{ url_for('expenses') }}">View all →</a>
+        </div>
+        {% if recent %}
+            <div class="recent-list">
+                {% for item in recent[:6] %}
+                    <div class="recent">
+                        <span class="cat cat-{{ item.category|lower }}">{{ item.category[0] }}</span>
+                        <div>
+                            <b>{{ item.category }}</b>
+                            <small>{{ item.expense_date }}{% if item.description %} · {{ item.description }}{% endif %}</small>
+                        </div>
+                        <strong>₹{{ item.amount|currency }}</strong>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty">
+                <b>✦</b>
+                <h4>No expenses yet</h4>
+                <p>Start with one small entry.</p>
+            </div>
+        {% endif %}
+    </article>
+</section>
+
+<script>
+    const labels = {{ chart_labels|tojson }};
+    const values = {{ chart_values|tojson }};
+    const colors = {{ chart_colors|tojson }};
+    const chartElem = document.getElementById('chart');
+
+    if (chartElem && labels.length > 0) {
+        new Chart(chartElem, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: colors.length ? colors : [
+                        '#7555D9', '#F28CB5', '#6CCDB4', '#F4C66A',
+                        '#91B8F5', '#F09A7E', '#A7D98C', '#B9A7EF'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff',
+                    hoverOffset: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '68%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 14,
+                            font: {
+                                family: "'DM Sans', sans-serif",
+                                size: 11
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const val = Number(context.parsed).toLocaleString('en-IN', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+                                return ' ' + context.label + ': ₹' + val;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

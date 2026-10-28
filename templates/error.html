@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Setup needed · Spend Smart{% endblock %}
+{% block heading %}Database Setup Required{% endblock %}
+
+{% block content %}
+<article class="panel error-panel">
+    <div class="panel-title">
+        <div>
+            <small>CONFIGURATION NOTICE</small>
+            <h3>{{ message }}</h3>
+        </div>
+        <span class="badge" style="background: #ffe8ed; color: #b93f5d;">Attention</span>
+    </div>
+    
+    <p style="color: #686580; line-height: 1.6; margin-bottom: 20px;">
+        Spend Smart needs an active connection to your MySQL database to display and record expenses.
+    </p>
+
+    <div style="background: #faf8fd; border: 1px solid #e9e4f0; border-radius: 12px; padding: 18px 20px; margin-bottom: 22px;">
+        <h4 style="font-family: 'Manrope', sans-serif; color: #26234f; margin-top: 0; margin-bottom: 10px;">Quick Setup Checklist:</h4>
+        <ol style="color: #686580; line-height: 1.8; margin: 0; padding-left: 20px;">
+            <li>Make sure the MySQL service is running locally.</li>
+            <li>Execute <code>database/schema.sql</code> in MySQL Workbench or via CLI to create <code>spend_smart_db</code> and the <code>expenses</code> table.</li>
+            <li>Ensure your <code>.env</code> file in the project root matches your MySQL host, port, user, and password.</li>
+        </ol>
+    </div>
+
+    {% if details %}
+        <details style="margin-bottom: 22px;">
+            <summary style="cursor: pointer; font-weight: 600; color: #7555d9; margin-bottom: 8px;">Technical details</summary>
+            <pre style="background: #f6f3fb; border-radius: 8px; padding: 14px; font-family: monospace; font-size: 12px; overflow-x: auto; color: #b93f5d;">{{ details }}</pre>
+        </details>
+    {% endif %}
+
+    <div>
+        <a class="button" href="{{ url_for('dashboard') }}">Try Again <b>→</b></a>
+    </div>
+</article>
+{% endblock %}
