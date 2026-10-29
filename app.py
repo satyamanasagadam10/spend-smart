@@ -35,20 +35,20 @@ CATEGORY_PALETTE = {
 def get_connection(include_db=True):
     """Establish and return a MySQL connection using .env configuration."""
     kwargs = {
-        "host": os.getenv("MYSQL_HOST", "localhost"),
-        "port": int(os.getenv("MYSQL_PORT", "3306")),
-        "user": os.getenv("MYSQL_USER", "root"),
-        "password": os.getenv("MYSQL_PASSWORD", ""),
+        "host": os.getenv("MYSQL_HOST", "localhost").strip(),
+        "port": int(str(os.getenv("MYSQL_PORT", "3306")).strip()),
+        "user": os.getenv("MYSQL_USER", "root").strip(),
+        "password": os.getenv("MYSQL_PASSWORD", "").strip(),
     }
     if include_db:
-        kwargs["database"] = os.getenv("MYSQL_DATABASE", "spend_smart_db")
+        kwargs["database"] = os.getenv("MYSQL_DATABASE", "spend_smart_db").strip()
 
     ssl_ca = os.getenv("MYSQL_SSL_CA")
-    if ssl_ca and os.path.exists(ssl_ca):
-        kwargs["ssl_ca"] = ssl_ca
+    if ssl_ca and os.path.exists(ssl_ca.strip()):
+        kwargs["ssl_ca"] = ssl_ca.strip()
         kwargs["ssl_verify_cert"] = True
-    elif os.getenv("MYSQL_SSL", "").lower() in ("true", "1") or (
-        os.getenv("MYSQL_HOST") and os.getenv("MYSQL_HOST") not in ("localhost", "127.0.0.1")
+    elif os.getenv("MYSQL_SSL", "").strip().lower() in ("true", "1") or (
+        kwargs["host"] and kwargs["host"] not in ("localhost", "127.0.0.1")
     ):
         # Enable SSL for cloud-hosted databases such as Aiven
         kwargs["ssl_disabled"] = False
@@ -56,9 +56,12 @@ def get_connection(include_db=True):
 
     return mysql.connector.connect(**kwargs)
 
+_db_initialized = False
+
 def init_db():
     """Ensure database and tables exist according to schema."""
-    db_name = os.getenv("MYSQL_DATABASE", "spend_smart_db")
+    global _db_initialized
+    db_name = os.getenv("MYSQL_DATABASE", "spend_smart_db").strip()
     # For local databases, attempt database creation if permissions allow
     try:
         with get_connection(include_db=False) as conn:
@@ -80,9 +83,20 @@ def init_db():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     INDEX idx_expense_date (expense_date),
                     INDEX idx_category (category)
-                )
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             """)
         conn.commit()
+    _db_initialized = True
+
+@app.before_request
+def ensure_db_initialized():
+    """Auto-initialize database tables on first web request if not already done."""
+    global _db_initialized
+    if not _db_initialized and request.endpoint not in ("static", "health"):
+        try:
+            init_db()
+        except Exception as e:
+            app.logger.warning(f"Database auto-initialization deferred: {e}")
 
 @app.cli.command("init-db")
 def init_db_cli():
