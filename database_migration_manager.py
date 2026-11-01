@@ -13,6 +13,13 @@ import getpass
 from decimal import Decimal
 import mysql.connector
 
+# Ensure UTF-8 output on Windows consoles
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
 DEFAULT_HOST = "mysql-37e1b381-satyamanasagadam10-8725.f.aivencloud.com"
 DEFAULT_PORT = 16504
 DEFAULT_USER = "avnadmin"
@@ -250,7 +257,7 @@ def run_migration():
 def run_assign():
     print("\n============================================================")
     print("ASSIGN EXISTING EXPENSES TO YOUR REGISTERED PRIMARY ACCOUNT")
-    print("This will attach the 4 unassigned historical expenses to your account.")
+    print("This will attach the unassigned historical expenses to your account.")
     print("============================================================")
     email = input("Enter your registered account email: ").strip().lower()
     if not email:
