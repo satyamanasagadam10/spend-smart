@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Account · Spend Smart</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-body">
+    <div class="auth-wrapper">
+        <!-- Brand Header -->
+        <a class="brand auth-brand" href="{{ url_for('index') }}">
+            <span class="mark">S</span>
+            Spend<span>Smart</span>
+        </a>
+
+        <!-- Auth Card -->
+        <article class="panel auth-card">
+            <div class="auth-card-header">
+                <small>GET STARTED IN SECONDS</small>
+                <h2>Create your account</h2>
+                <p>Start tracking your expenses with your own private dashboard.</p>
+            </div>
+
+            <!-- Flash Notifications -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes" style="margin-bottom: 18px;">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form method="post" action="{{ url_for('register') }}" class="form">
+                <label>
+                    Full name
+                    <input 
+                        type="text" 
+                        name="full_name" 
+                        required 
+                        autocomplete="name" 
+                        placeholder="e.g. Satya Manasa"
+                        value="{{ form_data.get('full_name', '') }}"
+                    >
+                </label>
+
+                <label>
+                    Email address
+                    <input 
+                        type="email" 
+                        name="email" 
+                        required 
+                        autocomplete="email" 
+                        placeholder="e.g. name@example.com"
+                        value="{{ form_data.get('email', '') }}"
+                    >
+                </label>
+
+                <div class="row">
+                    <label>
+                        Password <i>(min 6 chars)</i>
+                        <input 
+                            type="password" 
+                            name="password" 
+                            required 
+                            minlength="6"
+                            autocomplete="new-password" 
+                            placeholder="••••••••"
+                        >
+                    </label>
+
+                    <label>
+                        Confirm password
+                        <input 
+                            type="password" 
+                            name="confirm_password" 
+                            required 
+                            minlength="6"
+                            autocomplete="new-password" 
+                            placeholder="••••••••"
+                        >
+                    </label>
+                </div>
+
+                <button type="submit" class="button full">
+                    Create Account <b>→</b>
+                </button>
+            </form>
+
+            <div class="auth-card-footer">
+                <p>Already have an account? <a href="{{ url_for('login') }}">Log in here</a></p>
+            </div>
+        </article>
+    </div>
+</body>
+</html>

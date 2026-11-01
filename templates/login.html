@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log In · Spend Smart</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-body">
+    <div class="auth-wrapper">
+        <!-- Brand Header -->
+        <a class="brand auth-brand" href="{{ url_for('index') }}">
+            <span class="mark">S</span>
+            Spend<span>Smart</span>
+        </a>
+
+        <!-- Auth Card -->
+        <article class="panel auth-card">
+            <div class="auth-card-header">
+                <small>YOUR PERSONAL WORKSPACE</small>
+                <h2>Welcome back</h2>
+                <p>Log in to view your expenses and financial insights.</p>
+            </div>
+
+            <!-- Flash Notifications -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes" style="margin-bottom: 18px;">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form method="post" action="{{ url_for('login', next=request.args.get('next')) }}" class="form">
+                <label>
+                    Email address
+                    <input 
+                        type="email" 
+                        name="email" 
+                        required 
+                        autocomplete="email" 
+                        placeholder="e.g. name@example.com"
+                        value="{{ form_data.get('email', '') }}"
+                    >
+                </label>
+
+                <label>
+                    Password
+                    <input 
+                        type="password" 
+                        name="password" 
+                        required 
+                        autocomplete="current-password" 
+                        placeholder="••••••••"
+                    >
+                </label>
+
+                <button type="submit" class="button full">
+                    Log In <b>→</b>
+                </button>
+            </form>
+
+            <div class="auth-card-footer">
+                <p>Don't have an account? <a href="{{ url_for('register') }}">Create an account</a></p>
+            </div>
+        </article>
+    </div>
+</body>
+</html>

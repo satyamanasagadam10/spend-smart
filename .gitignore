@@ -33,3 +33,8 @@ desktop.ini
 
 # Redundant nested package folder
 Spend_Smart_Antigravity_Package/
+
+# Database backups and dumps containing live data
+database/backups/
+*.bak
+*backup*.sql

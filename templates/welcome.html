@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spend Smart · Personal Expense Tracking and Analysis</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="welcome-body">
+    <div class="welcome-shell">
+        <!-- Top Navigation -->
+        <header class="welcome-nav">
+            <a class="brand" href="{{ url_for('index') }}" style="margin: 0;">
+                <span class="mark">S</span>
+                Spend<span>Smart</span>
+            </a>
+            <div class="welcome-nav-actions">
+                <a class="button button-secondary" href="{{ url_for('login') }}">Log In</a>
+                <a class="button" href="{{ url_for('register') }}">Create Account <b>→</b></a>
+            </div>
+        </header>
+
+        <!-- Flash Notifications -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flashes" style="max-width: 900px; margin: 20px auto 0;">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Main Hero Section -->
+        <main class="welcome-hero">
+            <div class="welcome-hero-content">
+                <span class="chip">✦ Multi-User Personal Finance</span>
+                <h1>Make every rupee<br><em>count.</em></h1>
+                <p>
+                    Spend Smart helps you track everyday expenses, spot spending patterns, and stay in control of your budget — with private, secure workspaces for every user.
+                </p>
+                <div class="welcome-cta">
+                    <a class="button button-lg" href="{{ url_for('register') }}">
+                        Get Started Free <b>→</b>
+                    </a>
+                    <a class="button button-secondary button-lg" href="{{ url_for('login') }}">
+                        I Have an Account
+                    </a>
+                </div>
+            </div>
+
+            <div class="welcome-hero-art" aria-hidden="true">
+                <div class="bubble"></div>
+                <div class="coin">₹</div>
+                <div class="wallet">
+                    <i></i>
+                    <span>●</span>
+                </div>
+                <div class="spark">✦</div>
+            </div>
+        </main>
+
+        <!-- Features Grid -->
+        <section class="welcome-features">
+            <article class="welcome-feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Effortless Tracking</h3>
+                <p>Log expenses in seconds with flexible categories, intuitive date picking, and custom descriptions.</p>
+            </article>
+
+            <article class="welcome-feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Visual Analytics</h3>
+                <p>Live doughnut charts and real-time summaries let you understand where your money goes at a glance.</p>
+            </article>
+
+            <article class="welcome-feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>100% Private Workspaces</h3>
+                <p>Every account is fully isolated. Your expenses, totals, and habits are visible only to you.</p>
+            </article>
+        </section>
+
+        <!-- Footer -->
+        <footer class="welcome-footer">
+            <p>SPEND SMART · TRACK IT. UNDERSTAND IT. PLAN AHEAD.</p>
+        </footer>
+    </div>
+</body>
+</html>

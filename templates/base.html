@@ -36,6 +36,15 @@
             </nav>
             
             <div class="side-bottom">
+                {% if session.get('user_id') %}
+                    <div class="user-pill">
+                        <div>
+                            <small>LOGGED IN AS</small>
+                            <span>{{ session.get('user_name', 'My Account') }}</span>
+                        </div>
+                        <a href="{{ url_for('logout') }}" title="Log Out" class="logout-link">↪</a>
+                    </div>
+                {% endif %}
                 <div class="star">✦</div>
                 <p>Small steps today.<br><b>Stronger habits tomorrow.</b></p>
                 <small>PERSONAL FINANCE, MADE CLEAR</small>
@@ -49,7 +58,12 @@
                     <small>YOUR MONEY, IN FOCUS</small>
                     <h1>{% block heading %}Overview{% endblock %}</h1>
                 </div>
-                <span class="chip">● Personal workspace</span>
+                <div class="topbar-actions">
+                    <span class="chip">● {{ session.get('user_name', 'Personal workspace') }}</span>
+                    {% if session.get('user_id') %}
+                        <a href="{{ url_for('logout') }}" class="button button-secondary button-sm">Log Out</a>
+                    {% endif %}
+                </div>
             </header>
 
             <!-- Flash Notifications -->

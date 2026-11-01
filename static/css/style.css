@@ -843,3 +843,321 @@ pre {
         padding: 18px;
     }
 }
+
+
+/* --------------------------------------------------------------------------
+   Multi-User Authentication & Welcome Styles
+   -------------------------------------------------------------------------- */
+
+/* Buttons Variants */
+.button-secondary {
+    background: #ffffff;
+    color: #26234f;
+    border: 1px solid #dcd7eb;
+    box-shadow: 0 2px 8px rgba(38, 35, 79, 0.05);
+}
+
+.button-secondary:hover {
+    background: #f7f4fc;
+    color: #26234f;
+}
+
+.button-sm {
+    padding: 7px 14px;
+    font-size: 11.5px;
+    border-radius: 9px;
+    box-shadow: none;
+}
+
+.button-lg {
+    padding: 14px 24px;
+    font-size: 14px;
+}
+
+/* User Pill & Topbar Actions */
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-pill {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-pill div {
+    overflow: hidden;
+}
+
+.user-pill small {
+    color: #aaa6cc;
+    font-size: 9.5px;
+    letter-spacing: 0.8px;
+    display: block;
+    font-weight: 700;
+}
+
+.user-pill span {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 12.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.logout-link {
+    color: #f28cb5;
+    font-size: 15px;
+    text-decoration: none;
+    padding: 4px;
+    display: grid;
+    place-items: center;
+    transition: transform 0.15s ease;
+}
+
+.logout-link:hover {
+    transform: translateX(2px);
+}
+
+/* Welcome Page Layout */
+.welcome-body {
+    background: #f8f6fc;
+    color: #2d3044;
+    font: 14px/1.5 "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+}
+
+.welcome-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px 48px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 24px;
+}
+
+.welcome-nav .brand {
+    color: #26234f;
+    margin: 0;
+}
+
+.welcome-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.welcome-hero {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 32px;
+    background: linear-gradient(120deg, #ede7ff 0%, #faebf3 65%, #e6f7f2 100%);
+    border-radius: 28px;
+    padding: 48px 48px;
+    margin: 20px 0 36px;
+    box-shadow: 0 10px 30px rgba(117, 85, 217, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-hero-content {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.welcome-hero-content h1 {
+    font: 800 46px/1.08 "Manrope", sans-serif;
+    color: #26234f;
+    margin: 16px 0 14px;
+    letter-spacing: -1.2px;
+}
+
+.welcome-hero-content h1 em {
+    color: #7555d9;
+    font-style: normal;
+}
+
+.welcome-hero-content p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #5c5877;
+    margin: 0 0 26px;
+    max-width: 520px;
+}
+
+.welcome-cta {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.welcome-hero-art {
+    position: relative;
+    min-height: 260px;
+}
+
+.welcome-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.welcome-feature-card {
+    background: #ffffff;
+    border: 1px solid #ebe6f5;
+    border-radius: 20px;
+    padding: 28px 24px;
+    box-shadow: 0 4px 16px rgba(117, 85, 217, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.welcome-feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(117, 85, 217, 0.07);
+}
+
+.feature-icon {
+    font-size: 26px;
+    width: 50px;
+    height: 50px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: #f1edfc;
+    margin-bottom: 16px;
+}
+
+.welcome-feature-card h3 {
+    font: 800 17px "Manrope", sans-serif;
+    color: #26234f;
+    margin: 0 0 8px;
+}
+
+.welcome-feature-card p {
+    font-size: 13px;
+    color: #686580;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.welcome-footer {
+    margin-top: auto;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+    color: #9894b3;
+    padding-top: 24px;
+}
+
+/* Authentication Pages (Login & Register) */
+.auth-body {
+    background: linear-gradient(135deg, #f5f2fc, #faebf3 70%, #edf7f4);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 16px;
+    margin: 0;
+}
+
+.auth-wrapper {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-brand {
+    color: #26234f;
+    margin: 0 0 24px;
+}
+
+.auth-card {
+    width: 100%;
+    padding: 32px 30px;
+    box-shadow: 0 10px 30px rgba(117, 85, 217, 0.08);
+}
+
+.auth-card-header {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.auth-card-header small {
+    color: #7555d9;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    font-weight: 800;
+}
+
+.auth-card-header h2 {
+    font: 800 24px "Manrope", sans-serif;
+    color: #26234f;
+    margin: 6px 0 6px;
+}
+
+.auth-card-header p {
+    font-size: 12.5px;
+    color: #726f8d;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.auth-card-footer {
+    text-align: center;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid #f1edf6;
+}
+
+.auth-card-footer p {
+    font-size: 12.5px;
+    color: #726f8d;
+    margin: 0;
+}
+
+.auth-card-footer a {
+    color: #7555d9;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.auth-card-footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .welcome-hero {
+        grid-template-columns: 1fr;
+        padding: 32px 24px;
+    }
+    .welcome-hero-content h1 {
+        font-size: 34px;
+    }
+    .welcome-features {
+        grid-template-columns: 1fr;
+    }
+    .welcome-nav-actions {
+        display: none;
+    }
+}
